@@ -1,16 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:prak3/model/photo_list.dart';
+import 'package:prak3/provider/done_photo_provider.dart';
+import 'package:provider/provider.dart';
 
 class DonePhotophotoList extends StatelessWidget{
-  final List<PhotoList> donePhotophotoList;
-  const DonePhotophotoList({
-    Key? key,
-    required this.donePhotophotoList
-  }) : super(key: key);
+  const DonePhotophotoList({Key? key}) : super(key:key);
 
   @override
   Widget build(BuildContext context){
+    final List<PhotoList> donePhotophotoList = 
+      Provider.of<DonePhotoProvider>(
+          context,
+          listen: false,
+      ).donePhotophotoList;
+
     return Scaffold(
       appBar : AppBar(
         title: const Text('Photo has been seen'),

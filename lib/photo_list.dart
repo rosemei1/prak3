@@ -3,23 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:prak3/list_item.dart';
 import 'package:prak3/done_photo_list.dart';
 import 'package:prak3/model/photo_list.dart';
-
-
+import 'package:prak3/provider/done_photo_provider.dart';
+import 'package:provider/provider.dart';
 import 'detail_screen.dart';
+import 'provider/done_photo_provider.dart';
 
 class FotoList extends StatefulWidget{
-  final List<PhotoList> donePhotophotoList;
+  const FotoList({Key? key}): super(key: key);
 
-  const FotoList({
-    Key? key,
-    required this.donePhotophotoList
-  }) : super(key: key);
   @override
-  _FotolistState createState() => _FotolistState(donePhotophotoList);
+  _FotolistState createState() => _FotolistState();
 }
 
 class _FotolistState extends State<FotoList>{
-  final List<PhotoList> donePhotophotoList;
   final List<PhotoList> photophotoList = [
     PhotoList(name: "Turn Around", tema: "Evasion", imageAsset: "assets/images/el.JPG"),
     PhotoList(name: "The Outcast", tema: "Lonely in the Crowd", imageAsset: "assets/images/mbak.JPG"),
@@ -27,7 +23,6 @@ class _FotolistState extends State<FotoList>{
     PhotoList(name: "A Small Thing", tema: "Us", imageAsset: "assets/images/mas.jpg"),
   ];
 
-  _FotolistState(this.donePhotophotoList);
 
   @override
   Widget build(BuildContext context){
@@ -40,18 +35,22 @@ class _FotolistState extends State<FotoList>{
                 return DetailScreen(place: place);
               }));
             },
-            child: ListItem(
-              place: place,
-              isDone: donePhotophotoList.contains(place),
-            onCheckboxClick: (bool? value){
-                setState(() {
-                  if(value!=null){
-                    value
-                        ? donePhotophotoList.add(place)
-                        : donePhotophotoList.remove(place);
+            child: Consumer<DonePhotoProvider>(
+              builder: (context, DonePhotoProvider data, widget){
+                return ListItem(
+                  place: place,
+                  isDone: data.donePhotophotoList.contains(place),
+                  onCheckboxClick: (bool? value){
+                    setState(() {
+                     if(value!=null){
+                      value
+                        ? data.donePhotophotoList.add(place)
+                       : data.donePhotophotoList.remove(place);
+                     }
+                   });
                   }
-                });
-            }
+                );
+              },
             ),
           );
         },
